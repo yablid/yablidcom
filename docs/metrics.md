@@ -68,6 +68,11 @@ These values are useful and directionally correct, but not lab-grade or analytic
 
 ## Production TODO
 
+- On production host cutover, upgrade this metrics path to production-grade quality:
+  - replace/augment custom observers with `web-vitals`
+  - ship metric events to telemetry backend
+  - report p75 by route/device over time (not single-session values)
+  - use dashboard + alert thresholds for regressions
 - Verify production parity:
   - confirm metrics match hosting/runtime reality (CDN, edge, cache headers, compression, image pipeline)
   - validate values against Lighthouse + PageSpeed + CrUX for same URL/build

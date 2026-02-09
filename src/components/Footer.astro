@@ -53,11 +53,11 @@ const socials = [
               class="inp-probe"
               aria-label="Trigger an interaction sample for interaction to next paint"
             >
-              Interaction
+              Interact
             </button>
             <span> to next paint</span>
           </dt>
-          <dd data-metric-value="inp">Interact with page</dd>
+          <dd data-metric-value="inp">Click Interact</dd>
         </div>
         <div>
           <dt>Cumulative layout shift</dt>
@@ -87,6 +87,26 @@ const socials = [
 
     let inpValue = 0;
     let clsValue = 0;
+    const inpProbe = document.querySelector('.inp-probe');
+
+    const updateInp = (value) => {
+      if (!Number.isFinite(value) || value <= 0) return;
+      if (value > inpValue) {
+        inpValue = value;
+        updateMetric('inp', inpValue);
+      }
+    };
+
+    // Fallback demo interaction sample for this control itself.
+    // This is a simple click->next-frame approximation, not official INP.
+    if (inpProbe) {
+      inpProbe.addEventListener('click', () => {
+        const start = performance.now();
+        requestAnimationFrame(() => {
+          updateInp(performance.now() - start);
+        });
+      });
+    }
 
     if ('PerformanceObserver' in window) {
       const lcpObserver = new PerformanceObserver((list) => {
@@ -98,11 +118,10 @@ const socials = [
 
       const inpObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (entry.interactionId && entry.duration > inpValue) {
-            inpValue = entry.duration;
+          if (entry.interactionId) {
+            updateInp(entry.duration);
           }
         }
-        if (inpValue > 0) updateMetric('inp', inpValue);
       });
       inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 16 });
 
@@ -245,17 +264,13 @@ const socials = [
     padding: 0;
     margin: 0;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-underline-offset: 2px;
-    text-decoration-color: color-mix(in oklab, var(--accent) 55%, var(--text-muted) 45%);
-    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    color: color-mix(in oklab, var(--text-primary) 65%, var(--text-muted) 35%);
+    transition: color 0.2s ease;
   }
 
   .inp-probe:hover,
   .inp-probe:focus-visible {
-    color: var(--accent);
-    text-decoration-color: var(--accent);
+    color: var(--text-primary);
   }
 
   .inp-probe:focus-visible {
