@@ -1,0 +1,169 @@
+---
+interface Props {
+	title: string;
+	sections: [string, Array<any>][];
+	basePath: string;
+	showGitHub?: boolean;
+}
+
+const { title, sections, basePath, showGitHub = false } = Astro.props;
+---
+
+<h1>{title}</h1>
+
+{sections.map(([sectionName, entries]) => (
+	<details class="section" open>
+		<summary class="section-header">{sectionName}</summary>
+		<ul class="items-list">
+			{entries.map(entry => (
+				<li class="item">
+					<div class="item-header">
+						<a href={`/${basePath}/${entry.id}`} class="item-title">{entry.data.title}</a>
+						<span>|</span>
+						{entry.data.type && <span class="item-type">{entry.data.type}</span>}
+						{showGitHub && entry.data.githubRepo && (
+							<a href={`https://github.com/${entry.data.githubRepo}`} class="github-link" target="_blank" rel="noopener noreferrer">
+								<img src="/socials/github-mark-white.svg" alt="GitHub" class="github-icon" />
+							</a>
+						)}
+					</div>
+					<p class="item-summary">{entry.data.summary}</p>
+				</li>
+			))}
+		</ul>
+	</details>
+))}
+
+<style>
+	h1 {
+		font-size: var(--font-size-h2);
+	}
+
+	.section {
+		margin-bottom: var(--space-3);
+	}
+
+	.section-header {
+		font-size: var(--font-size-body);
+		font-weight: normal;
+		color: var(--text-muted);
+		cursor: pointer;
+		padding: var(--space-1) 0;
+		list-style: none;
+		user-select: none;
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+	}
+
+	.section-header::before {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background-color: var(--section-rule-color);
+	}
+
+	.section-header::after {
+		content: '';
+		flex: 3;
+		height: 1px;
+		background-color: var(--section-rule-color);
+	}
+
+	.section:not([open]) .section-header::after {
+		content: '>';
+		text-align: right;
+		height: auto;
+		background: none;
+	}
+
+	.section-header::-webkit-details-marker {
+		display: none;
+	}
+
+	.section-header:hover,
+	.section-header:focus {
+		color: var(--accent);
+		outline: none;
+	}
+
+	.section-header:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.items-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.item {
+		margin: 0;
+		padding: var(--space-1) 0;
+		border-radius: 4px;
+		position: relative;
+	}
+
+	.item-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		margin-bottom: var(--space-1);
+	}
+
+	.item-title {
+		font-size: var(--font-size-body);
+		margin: 0;
+		color: var(--text-primary);
+		text-decoration: none;
+		font-weight: normal;
+	}
+
+	.item-title::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 0;
+	}
+
+	.item-title:hover {
+		color: var(--accent);
+	}
+
+	.github-link {
+		display: inline-flex;
+		align-items: center;
+		position: relative;
+		z-index: 1;
+		opacity: 0.7;
+		transition: opacity 0.2s;
+	}
+
+	.github-link:hover {
+		opacity: 1;
+	}
+
+	.github-icon {
+		width: 24px;
+		height: 24px;
+		display: block;
+	}
+
+	.item-summary {
+		margin: 0 0 var(--space-1) 0;
+		padding-left: 0;
+		color: var(--text-muted);
+	}
+
+	.item-type {
+		font-size: 0.875rem;
+		color: var(--text-primary);
+	}
+</style>

@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CollectionList from '../../components/CollectionList.astro';
+
+const byproducts = await getCollection('byproducts');
+
+type ByproductEntry = typeof byproducts[number];
+
+const grouped = byproducts.reduce((acc, entry) => {
+	const section = entry.data.section || 'Other';
+	if (!acc[section]) {
+		acc[section] = [];
+	}
+	acc[section].push(entry);
+	return acc;
+}, {} as Record<string, ByproductEntry[]>);
+
+const sections = Object.entries(grouped);
+---
+
+<Layout title="Byproducts">
+	<CollectionList title="Byproducts" sections={sections} basePath="byproducts" showGitHub />
+</Layout>

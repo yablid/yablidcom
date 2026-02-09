@@ -1,0 +1,148 @@
+/* Global CSS Variables - Design Tokens */
+
+:root {
+  /* Color System */
+  /*
+  background -> page background
+  surface -> raised elment background (cards, dropdowns, inputs, nav, modals)
+  accent -> highlight / primary action / focus
+  error -> error states / needs attention
+
+  Neutrals → text and borders:
+    neutral-dark → main text (text-primary)
+    neutral-mid → secondary text, placeholders (text-muted)
+    neutral-light → subtle borders, dividers, hover backgrounds (border-subtle)
+  
+  Neutrals → text and borders:
+    neutral-dark → main text (text-primary)
+    neutral-mid → secondary text, placeholders (text-muted)
+    neutral-light → subtle borders, dividers, hover backgrounds (border-subtle)
+  */
+
+  --background: oklch(0.2223 0.01 297.31);  /* #1b1a1f */
+  --surface: oklch(0.2523 0.036 297.31);  /* #241e31 */
+  --accent: oklch(0.7937 0.1227 227.45); /* #56cbf9 */
+  --error: oklch(0.4357 0.1522 26.99); /* #931f1d */
+  /* --neutral-light: oklch(0.9194 0.0316 59.7); */   /* #e0e0e5 */
+  /* --neutral-light: oklch(0.9301 0.0111 348.44); /* #eee5e9 */
+  --neutral-light: oklch(0.9362 0.0055 3.34);
+ 
+  --neutral-mid: oklch(0.6575 0.0198 314.68); /* #786f82 */
+  --neutral-dark: oklch(0.4712 0.0277 310.4); /* #605767 */
+
+  --barbie-pink: oklch(0.6408 0.262769 355.4559); /* #f90093 */
+  --vibrant-coral: oklch(0.7138 0.1801 30.79); /* #ff6f59 */
+
+  /* testing */
+  --ash-grey: oklch(0.7982 0.0314 191.43); /* too close to bg but pretty */
+  --porcelain: oklch(0.9977 0.0045 134.85); /* this is bright */
+  --bone: oklch(0.9159 0.0264 82.38); /* very close */
+  --wheat: oklch(0.9125 0.0531 80.07);
+  --alabaster: oklch(0.8771 0.0088 308.35);
+  --tropical-teal: oklch(0.7261 0.1215 192.76);
+
+  /* semantic color aliases */
+  --text-primary: var(--neutral-light);
+  --text-muted: var(--neutral-mid);
+  --border-subtle: var(--neutral-dark);
+  --section-rule-color: var(--vibrant-coral);
+
+  /* color alternatives */
+  --background-space-purple-lighter: oklch(0.2869 0.0351 277.03);
+  --dune-space-one: oklch(0.2856 0.0375 273.04);
+  --dune-space-purple: oklch(0.2123 0.056 297.31);
+  --accent-light: oklch(0.8628 0.049 202.74);
+  --dune-blue: oklch(0.7292 0.0994 245.06);
+  --dune-blue-alt: oklch(0.6977 0.1089 258.28);
+  --dune-turquoise: oklch(0.6086 0.1087 217.01);
+  --error-alt: oklch(0.4456 0.0849 33.51);
+  --dune-orange: oklch(0.6687 0.1235 46.68);
+  --surface-alt-zero: oklch(0.8771 0.0088 308.35);
+  --surface-alt-one: oklch(0.934 0.0256 73.18);
+  --surface-alt-two: oklch(0.8808 0.0361 75.52);
+  --surface-alt-three: oklch(0.7552 0.0461 80.48);
+  --surface-alt-four: oklch(0.8207 0.098 80.97);
+  --neutral-light-one: oklch(0.6575 0.0198 314.68);
+  --neutral-mid-one: oklch(0.5565 0.0308 306.73);
+  --neutral-dark-one: oklch(0.4712 0.0277 310.4);
+  --pink-mist: oklch(0.7374 0.1073 356.09);
+  --test: #F90093;
+
+  /* Grid System - 8px base */
+  --grid-base: 8px;
+
+  /* Spacing Scale */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+
+  /* Typography Scale */
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 1.625rem;
+  --font-size-body: 1rem;
+
+  --line-height-heading: 1.2;
+  --line-height-body: 1.5;
+
+  /* Layout */
+  --max-width-text: 75ch;
+
+  /* Font Stack */
+  --font-family: ui-monospace, "DejaVu Sans Mono", "Liberation Mono", Melo, Consolas, "Courier New", monospace;
+}
+
+/* Global Base Styles */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+/* Typography */
+
+h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-heading);
+  margin: 0 0 var(--space-2) 0;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-heading);
+  margin: 0 0 var(--space-2) 0;
+}
+
+p {
+  margin: 0 0 var(--space-2) 0;
+  max-width: var(--max-width-text);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Native Cross-Document View Transitions */
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms;
+  }
+}

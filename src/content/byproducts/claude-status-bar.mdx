@@ -1,0 +1,21 @@
+---
+slug: claude-status-bar
+title: Claude Status Bar
+summary: simple .mjs script to add context window utilization percentage to claude code terminal
+type: ai tool
+section: claude-ons
+createdAt: 2025-10-01
+githubRepo: yablid/claude-status-bar
+---
+
+import { Picture } from "astro:assets";
+import snip from "../../assets/byproducts/snip.png";
+
+This is small add .mjs script I built to see exactly where I am in the context window. It's less relevant as the fidelity of /compact improves, but I still enjoy seeing the green part of the context window.
+
+<Picture
+	src={snip}
+	alt="Claude status bar in terminal"
+	formats={["avif", "webp"]}
+	sizes="(max-width: 900px) 100vw, 900px"
+/>

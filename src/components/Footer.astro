@@ -1,0 +1,287 @@
+---
+const socials = [
+  {
+    name: 'Bluesky',
+    href: 'https://bsky.app/profile/yablid',
+    icon: '/socials/bluesky.svg'
+  },
+  {
+    name: 'X',
+    href: 'https://twitter.com/yablid',
+    icon: '/socials/x.svg'
+  },
+  {
+    name: 'GitHub',
+    href: 'https://github.com/yablid',
+    icon: '/socials/github-mark-white.svg'
+  },
+];
+---
+
+<footer>
+  <ul class="socials">
+    {socials.map(social => (
+      <li>
+        <a
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={social.name}
+        >
+          <img src={social.icon} alt={social.name} />
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p>&copy; {new Date().getFullYear()} Yablid</p>
+  <details class="metrics-shell">
+    <summary class="metrics-toggle">Metrics</summary>
+    <div class="metrics-panel" aria-live="polite">
+      <dl class="metrics-list">
+        <div>
+          <dt>Time to first byte</dt>
+          <dd data-metric-value="ttfb">--</dd>
+        </div>
+        <div>
+          <dt>Largest contentful paint</dt>
+          <dd data-metric-value="lcp">--</dd>
+        </div>
+        <div>
+          <dt>
+            <button
+              type="button"
+              class="inp-probe"
+              aria-label="Trigger an interaction sample for interaction to next paint"
+            >
+              Interaction
+            </button>
+            <span> to next paint</span>
+          </dt>
+          <dd data-metric-value="inp">Interact with page</dd>
+        </div>
+        <div>
+          <dt>Cumulative layout shift</dt>
+          <dd data-metric-value="cls">--</dd>
+        </div>
+      </dl>
+    </div>
+  </details>
+</footer>
+
+<script is:inline>
+  (() => {
+    const format = (id, value) => {
+      if (id === 'cls') return value.toFixed(3);
+      return `${Math.round(value)} ms`;
+    };
+
+    const updateMetric = (id, value) => {
+      if (!Number.isFinite(value)) return;
+      const valueEl = document.querySelector(`[data-metric-value="${id}"]`);
+      if (!valueEl) return;
+      valueEl.textContent = format(id, value);
+    };
+
+    const navEntry = performance.getEntriesByType('navigation')[0];
+    if (navEntry) updateMetric('ttfb', navEntry.responseStart);
+
+    let inpValue = 0;
+    let clsValue = 0;
+
+    if ('PerformanceObserver' in window) {
+      const lcpObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        if (lastEntry) updateMetric('lcp', lastEntry.startTime);
+      });
+      lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+
+      const inpObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (entry.interactionId && entry.duration > inpValue) {
+            inpValue = entry.duration;
+          }
+        }
+        if (inpValue > 0) updateMetric('inp', inpValue);
+      });
+      inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 16 });
+
+      const clsObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (!entry.hadRecentInput) clsValue += entry.value;
+        }
+        updateMetric('cls', clsValue);
+      });
+      clsObserver.observe({ type: 'layout-shift', buffered: true });
+    }
+  })();
+</script>
+
+<style>
+  footer {
+    min-height: 80px;
+    padding: var(--space-1);
+    border-top: 1px solid var(--accent);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-primary);
+    text-align: center;
+  }
+
+  .socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: calc(var(--space-2) * 4);
+  }
+
+  .socials li {
+    margin: 0;
+  }
+
+  .socials a {
+    display: block;
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.2s;
+  }
+
+  .socials a:hover,
+  .socials a:focus {
+    opacity: 0.7;
+  }
+
+  .socials a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .socials img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .metrics-shell {
+    justify-self: end;
+  }
+
+  .metrics-toggle {
+    color: var(--text-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--border-subtle);
+    text-underline-offset: 2px;
+    list-style: none;
+  }
+
+  .metrics-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .metrics-toggle:hover,
+  .metrics-toggle:focus {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .metrics-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .metrics-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + var(--space-1));
+    border: 1px solid var(--accent);
+    background: color-mix(in oklab, var(--background) 86%, var(--surface) 14%);
+    padding: var(--space-2);
+    transform: translateY(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .metrics-shell[open] .metrics-panel {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .metrics-list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .metrics-list div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .metrics-list dt {
+    color: var(--text-muted);
+  }
+
+  .inp-probe {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in oklab, var(--accent) 55%, var(--text-muted) 45%);
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  .inp-probe:hover,
+  .inp-probe:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .inp-probe:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .metrics-list dd {
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 640px) {
+    footer {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .socials {
+      justify-self: start;
+    }
+
+    p {
+      justify-self: center;
+    }
+  }
+</style>

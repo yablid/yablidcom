@@ -1,0 +1,516 @@
+---
+/**
+ * src/pages/style-guide.astro
+ */
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Style Guide</title>
+    <style>
+      /*
+      Color token guide:
+
+      background: page background
+      surface: raised element background (cards, dropdowns, inputs)
+      accent: highlight / primary action
+              (selected button background, button border, input focus ring, visited/important link)
+      error: error / needs-attention state
+
+      neutral-dark: main text color (text-primary)
+      neutral-mid: secondary text, placeholders (text-muted)
+      neutral-light: subtle borders, dividers, hover backgrounds (border-subtle)
+      */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--background);
+        color: var(--text-primary);
+      }
+
+      .page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 0.75rem;
+      }
+
+      p {
+        margin: 0 0 0.5rem;
+        color: var(--text-muted);
+      }
+
+      .section {
+        padding: 1.25rem 1.5rem;
+        border-radius: 0.75rem;
+        background: color-mix(in srgb, var(--surface) 95%, transparent);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .section + .section {
+        margin-top: 0.5rem;
+      }
+
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+
+      .swatch {
+        flex: 0 0 120px;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid var(--border-subtle);
+        background: var(--surface);
+      }
+
+      .swatch-color {
+        height: 48px;
+      }
+
+      .swatch-meta {
+        padding: 0.4rem 0.6rem 0.55rem;
+        font-size: 0.75rem;
+      }
+
+      .swatch-meta strong {
+        display: block;
+        margin-bottom: 0.15rem;
+        color: var(--text-primary);
+      }
+
+      .swatch-meta span {
+        display: block;
+        color: var(--text-muted);
+      }
+
+      .swatch--background .swatch-color {
+        background: var(--background);
+      }
+
+      .swatch--surface .swatch-color {
+        background: var(--surface);
+      }
+
+      .swatch--accent .swatch-color {
+        background: var(--accent);
+      }
+
+      .swatch--error .swatch-color {
+        background: var(--error);
+      }
+
+      .swatch--neutral-light .swatch-color {
+        background: var(--neutral-light);
+      }
+
+      .swatch--neutral-mid .swatch-color {
+        background: var(--neutral-mid);
+      }
+
+      .swatch--neutral-dark .swatch-color {
+        background: var(--neutral-dark);
+      }
+
+      .components-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .card {
+        background: var(--surface);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-subtle);
+        padding: 0.85rem 1rem;
+        min-width: 220px;
+      }
+
+      .card h3 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .card p {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .btn {
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: var(--background);
+        border-color: var(--accent);
+      }
+
+      .btn-secondary {
+        background: var(--surface);
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-primary);
+        border-color: var(--border-subtle);
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .link-accent {
+        color: var(--accent);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        font-size: 0.85rem;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+      }
+
+      .field label {
+        color: var(--text-muted);
+      }
+
+      .input {
+        background: var(--surface);
+        color: var(--text-primary);
+        border-radius: 0.5rem;
+        border: 1px solid var(--border-subtle);
+        padding: 0.4rem 0.6rem;
+        font: inherit;
+        font-size: 0.8rem;
+      }
+
+      .input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .input:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-color: var(--accent);
+      }
+
+      .helper-text {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .helper-text--error {
+        color: var(--error);
+      }
+
+      .input--error {
+        border-color: var(--error);
+      }
+
+      .error-banner {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.6rem 0.75rem;
+        border-radius: 0.5rem;
+        border-left: 3px solid var(--error);
+        background: color-mix(in srgb, var(--error) 12%, var(--surface));
+        font-size: 0.78rem;
+      }
+
+      .error-banner strong {
+        display: block;
+        margin-bottom: 0.15rem;
+        color: var(--text-primary);
+      }
+
+      .error-banner span {
+        color: var(--text-muted);
+      }
+
+      .dropdown {
+        background: var(--surface);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-subtle);
+        padding: 0.3rem 0;
+        min-width: 220px;
+        font-size: 0.8rem;
+        overflow: hidden;
+      }
+
+      .dropdown-header {
+        padding: 0.4rem 0.75rem 0.3rem;
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+      }
+
+      .dropdown-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .dropdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3rem 0.75rem;
+        background: var(--surface);
+        color: var(--text-primary);
+      }
+
+      .dropdown-item + .dropdown-item {
+        border-top: 1px solid var(--border-subtle);
+      }
+
+      .dropdown-item-label {
+        flex: 1;
+      }
+
+      .dropdown-item-meta {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .dropdown-item.is-hover {
+        /* Hover state: use neutral-light as a simple hover background */
+        background: var(--neutral-light);
+      }
+
+      .dropdown-item.is-selected {
+        /* Selected: keep surface background but emphasize with accent text */
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .dropdown-item.is-selected .dropdown-item-meta {
+        color: var(--text-muted);
+      }
+
+      .token-label {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="section">
+        <h1>Style Guide</h1>
+        <p>Quick visual reference for how the design tokens are used.</p>
+      </section>
+
+      <section class="section">
+        <h2>Tokens</h2>
+        <p>Base tokens and neutral mapping into text and borders.</p>
+
+        <div class="swatches">
+          <div class="swatch swatch--background">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>background</strong>
+              <span>Page background</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--surface">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>surface</strong>
+              <span>Raised elements (cards, dropdowns, inputs)</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--accent">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>accent</strong>
+              <span>Primary action / highlight</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--error">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>error</strong>
+              <span>Errors / destructive states</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--neutral-dark">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>neutral-dark → text-primary</strong>
+              <span>Main text</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--neutral-mid">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>neutral-mid → text-muted</strong>
+              <span>Secondary text / placeholders</span>
+            </div>
+          </div>
+
+          <div class="swatch swatch--neutral-light">
+            <div class="swatch-color"></div>
+            <div class="swatch-meta">
+              <strong>neutral-light → border-subtle</strong>
+              <span>Borders / dividers / hover bg</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Buttons & Links</h2>
+        <p>Primary uses accent; secondary/ghost sit on surface.</p>
+
+        <div class="components-row">
+          <div class="card">
+            <h3>Buttons</h3>
+            <p>Primary = accent background, text on background.</p>
+            <div class="btn-row">
+              <button class="btn btn-primary">Primary button</button>
+              <button class="btn btn-secondary">Secondary button</button>
+              <button class="btn btn-ghost">Ghost button</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Links</h3>
+            <p>Accent used for important links.</p>
+            <a href="#" class="link-accent">Visited / primary link</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Inputs & Errors</h2>
+        <p>Inputs sit on surface with subtle borders; focus ring uses accent.</p>
+
+        <div class="components-row">
+          <div class="card">
+            <h3>Input</h3>
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                class="input"
+                placeholder="you@example.com"
+              />
+              <div class="helper-text">Helper text using text-muted.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Error state</h3>
+            <div class="field" style="margin-bottom: 0.5rem;">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                class="input input--error"
+                placeholder="••••••••"
+              />
+              <div class="helper-text helper-text--error">
+                Error text using error color.
+              </div>
+            </div>
+
+            <div class="error-banner">
+              <div>
+                <strong>Error banner</strong>
+                <span>Describes something that needs attention.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Dropdown</h2>
+        <p>
+          Panel uses surface. Item hover uses neutral-light. Selected item uses accent
+          text.
+        </p>
+
+        <div class="components-row">
+          <div class="card">
+            <h3>Dropdown example</h3>
+            <div class="dropdown">
+              <div class="dropdown-header">
+                <span class="token-label">surface</span> dropdown background
+              </div>
+              <ul class="dropdown-list">
+                <li class="dropdown-item">
+                  <span class="dropdown-item-label">Default item</span>
+                  <span class="dropdown-item-meta">surface + text-primary</span>
+                </li>
+                <li class="dropdown-item is-hover">
+                  <span class="dropdown-item-label">Hovered item (example)</span>
+                  <span class="dropdown-item-meta">neutral-light background</span>
+                </li>
+                <li class="dropdown-item is-selected">
+                  <span class="dropdown-item-label">Selected item</span>
+                  <span class="dropdown-item-meta">accent text</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

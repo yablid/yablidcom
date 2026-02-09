@@ -1,0 +1,87 @@
+---
+const navLinks = [
+  { href: '/', label: 'Yablid' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/byproducts', label: 'Byproducts' },
+  { href: '/thoughts', label: 'Thoughts' },
+];
+
+const normalize = (path) => path.replace(/\/+$/, '') || '/';
+const currentPath = normalize(Astro.url.pathname);
+---
+
+<nav>
+  <ul>
+    {navLinks.map(link => {
+      const isActive = currentPath === normalize(link.href);
+      return (
+        <li>
+          <a
+            href={link.href}
+            aria-current={isActive ? 'page' : undefined}
+            class:list={['nav-link', { 'nav-link--active': isActive }]}
+          >
+            {link.label}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+  <div class="nav-divider" aria-hidden="true"></div>
+</nav>
+
+<style>
+  nav {
+    padding: var(--space-2) 0;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .nav-divider {
+    height: 1px;
+    width: 100%;
+    background: var(--accent);
+    margin-top: var(--space-2);
+  }
+
+  li {
+    margin: 0;
+  }
+
+  .nav-link {
+    display: block;
+    padding: var(--space-1);
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    color: var(--accent);
+    outline: none;
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .nav-link--active {
+    color: var(--accent);
+  }
+
+  /* Scale up for larger screens */
+  @media (min-width: 640px) {
+    ul {
+      flex-direction: row;
+      gap: var(--space-2);
+    }
+  }
+</style>

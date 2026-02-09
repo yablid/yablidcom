@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CollectionList from '../../components/CollectionList.astro';
+
+const thoughts = await getCollection('thoughts');
+
+type ThoughtEntry = typeof thoughts[number];
+
+const grouped = thoughts.reduce((acc, entry) => {
+	const section = entry.data.section || 'Other';
+	if (!acc[section]) {
+		acc[section] = [];
+	}
+	acc[section].push(entry);
+	return acc;
+}, {} as Record<string, ThoughtEntry[]>);
+
+const sections = Object.entries(grouped);
+---
+
+<Layout title="Thoughts">
+	<CollectionList title="Thoughts" sections={sections} basePath="thoughts" />
+</Layout>
