@@ -5,11 +5,14 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
+  description?: string;
   wide?: boolean;
 }
 
-const { title = 'Yablid', wide = false } = Astro.props;
+const defaultDescription = 'Applied AI engineering and consulting. Projects, thoughts, and tools by Yablid.';
+const { title = 'Yablid', description = defaultDescription, wide = false } = Astro.props;
 const pageTitle = title === 'Yablid' ? 'Yablid' : `Yablid - ${title}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://yablid.com').href;
 ---
 
 <!doctype html>
@@ -20,6 +23,18 @@ const pageTitle = title === 'Yablid' ? 'Yablid' : `Yablid - ${title}`;
 		<link rel="icon" href="data:," />
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="Yablid" />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
 	</head>
 	<body class:list={[{ 'is-wide': wide }]}>
 		<div class="page-wrapper">
