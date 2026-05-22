@@ -14,7 +14,129 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<Layout title={entry.data.title}>
+<Layout title={entry.data.title} wide>
 	<h1>{entry.data.title}</h1>
-	<Content />
+	<article class="prose">
+		<Content />
+	</article>
 </Layout>
+
+<style>
+	.prose {
+		max-width: var(--max-width-prose, 92ch);
+	}
+
+	.prose :global(h2) {
+		margin-top: var(--space-3);
+		color: var(--vibrant-coral);
+	}
+
+	.prose :global(h2)::before {
+		content: '## ';
+		color: var(--text-muted);
+		font-weight: normal;
+	}
+
+	.prose :global(h3) {
+		font-size: 1.125rem;
+		line-height: var(--line-height-heading);
+		margin: var(--space-3) 0 var(--space-1) 0;
+		color: var(--accent);
+	}
+
+	.prose :global(h3)::before {
+		content: '### ';
+		color: var(--text-muted);
+		font-weight: normal;
+	}
+
+	.prose :global(h4) {
+		font-size: 1rem;
+		font-weight: 600;
+		margin: var(--space-2) 0 var(--space-1) 0;
+		color: var(--pink-mist);
+	}
+
+	.prose :global(p) {
+		max-width: none;
+	}
+
+	.prose :global(ul),
+	.prose :global(ol) {
+		margin: 0 0 var(--space-2) 0;
+		padding-left: var(--space-3);
+	}
+
+	.prose :global(li) {
+		margin-bottom: calc(var(--space-1) / 2);
+	}
+
+	.prose :global(li > p) {
+		margin: 0;
+	}
+
+	.prose :global(hr) {
+		border: none;
+		border-top: 1px solid var(--section-rule-color);
+		margin: var(--space-3) 0;
+	}
+
+	.prose :global(code) {
+		background: var(--surface);
+		padding: 1px 6px;
+		border-radius: 3px;
+		font-size: 0.9em;
+		color: var(--text-primary);
+	}
+
+	.prose :global(pre) {
+		background: var(--surface);
+		padding: var(--space-2);
+		border-radius: 4px;
+		overflow-x: auto;
+		margin: 0 0 var(--space-2) 0;
+	}
+
+	.prose :global(pre code) {
+		background: transparent;
+		padding: 0;
+	}
+
+	.prose :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: var(--space-2) 0;
+		font-size: 0.95em;
+	}
+
+	.prose :global(th),
+	.prose :global(td) {
+		text-align: left;
+		padding: var(--space-1) var(--space-2);
+		border-bottom: 1px solid var(--border-subtle);
+		vertical-align: top;
+	}
+
+	.prose :global(th) {
+		color: var(--text-muted);
+		font-weight: normal;
+		border-bottom-color: var(--section-rule-color);
+	}
+
+	.prose :global(blockquote) {
+		margin: var(--space-2) 0;
+		padding-left: var(--space-2);
+		border-left: 2px solid var(--section-rule-color);
+		color: var(--text-muted);
+	}
+
+	.prose :global(video) {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.prose :global(strong) {
+		color: var(--text-primary);
+		font-weight: 600;
+	}
+</style>

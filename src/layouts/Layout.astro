@@ -5,9 +5,10 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
+  wide?: boolean;
 }
 
-const { title = 'Yablid' } = Astro.props;
+const { title = 'Yablid', wide = false } = Astro.props;
 const pageTitle = title === 'Yablid' ? 'Yablid' : `Yablid - ${title}`;
 ---
 
@@ -20,7 +21,7 @@ const pageTitle = title === 'Yablid' ? 'Yablid' : `Yablid - ${title}`;
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
 	</head>
-	<body>
+	<body class:list={[{ 'is-wide': wide }]}>
 		<div class="page-wrapper">
 			<header class="page-section">
 				<Navbar />
@@ -53,6 +54,10 @@ const pageTitle = title === 'Yablid' ? 'Yablid' : `Yablid - ${title}`;
 		max-width: var(--max-width-text);
 		margin: 0 auto;
 		padding: var(--space-2);
+	}
+
+	body.is-wide .page-section {
+		max-width: var(--max-width-prose, 92ch);
 	}
 
 	.page-main {
