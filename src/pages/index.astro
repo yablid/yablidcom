@@ -5,5 +5,54 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Home">
 	<h1>Yablid</h1>
 	<p>Future ex-code-writer</p>
-	<p>Currently engineering context</p>
+	<p>Here to engineer context for you.</p>
+
+	<section class="hire">
+		<h2>For Hire</h2>
+		<p>
+			Applied AI and automation consulting for small and medium businesses.
+			Applications and integrations tailored to how you prefer to use AI.
+		</p>
+		<p>
+			Interested? Send a brief intro to
+			<a href="mailto:yablid@pm.me?subject=Consulting%20inquiry">yablid@pm.me</a>
+			with:
+		</p>
+		<ul class="hire-checklist">
+			<li>Who you are and what you do</li>
+			<li>A link — LinkedIn, website, whatever works</li>
+			<li>What you're trying to accomplish</li>
+		</ul>
+	</section>
 </Layout>
+
+<style>
+	.hire {
+		margin-top: calc(var(--space-3) * 2);
+		border-top: 1px solid var(--section-rule-color);
+		padding-top: var(--space-3);
+	}
+
+	.hire h2 {
+		color: var(--accent);
+	}
+
+	.hire a {
+		color: var(--vibrant-coral);
+	}
+
+	.hire a:hover {
+		text-decoration: none;
+	}
+
+	.hire-checklist {
+		list-style: "— ";
+		padding-left: var(--space-2);
+		margin: var(--space-1) 0 0 0;
+	}
+
+	.hire-checklist li {
+		padding: calc(var(--space-1) / 2) 0;
+		color: var(--text-muted);
+	}
+</style>
